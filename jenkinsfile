@@ -1,6 +1,6 @@
 node {
   stage('Checkout') {
-    git url: 'https://github.com/YOUR_USERNAME/spring-localstorage-crud-ui.git'
+    git url: 'https://github.com/Sarthak-code786/spring_localstorage_crud_ui.git'
   }
 
   stage('Permission Setup') {
@@ -23,9 +23,6 @@ node {
     sh 'nohup ./gradlew bootRun > app.log 2>&1 &'
     sleep 10 // Give time to start
   }
-
-
-
 
   stage('Cleanup') {
     // Kill the running app
