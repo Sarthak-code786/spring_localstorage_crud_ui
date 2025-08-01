@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-LocalStorageUiApplication<app>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "spring.localstorage.crud.ui.LocalStorageUiApplication",
+            "projectName": "app",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
