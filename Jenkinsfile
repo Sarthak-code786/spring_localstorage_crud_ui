@@ -24,18 +24,7 @@ node {
     sleep 10 // Give time to start
   }
 
-  stage('Cleanup') {
-    // Kill the running app
-    sh '''
-    PID=$(lsof -ti:8080)
-    if [ -n "$PID" ]; then
-      kill -9 $PID
-    fi
-    '''
-  }
-}
-
-stage('Post: Always') {
+  stage('Post: Always') {
   archiveArtifacts artifacts: 'build/libs/*.jar', fingerprint: true
 }
 
@@ -49,4 +38,16 @@ if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
     echo 'Build or tests failed!'
   }
 }
+  stage('Cleanup') {
+    // Kill the running app
+    sh '''
+    PID=$(lsof -ti:8080)
+    if [ -n "$PID" ]; then
+      kill -9 $PID
+    fi
+    '''
+  }
+}
+
+
 
