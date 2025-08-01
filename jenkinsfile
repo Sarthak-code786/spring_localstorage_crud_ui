@@ -1,0 +1,51 @@
+node {
+  stage('Checkout') {
+    git url: 'https://github.com/YOUR_USERNAME/spring-localstorage-crud-ui.git'
+  }
+
+  stage('Permission Setup') {
+    // Make gradlew executable
+    sh 'chmod +x gradlew'
+  }
+
+  stage('Build') {
+    // Clean and build using Gradle wrapper
+    sh './gradlew clean build'
+  }
+
+  stage('Test') {
+    // Run tests
+    sh './gradlew test'
+  }
+
+  stage('Run App') {
+    // Start Spring Boot in background
+    sh 'nohup ./gradlew bootRun > app.log 2>&1 &'
+    sleep 10 // Give time to start
+  }
+
+ post{
+    always {
+      // Archive the build artifacts
+      archiveArtifacts artifacts: 'build/libs/*.jar', fingerprint: true
+    }
+    success {
+      // Notify on success
+      echo 'Build and tests succeeded!'
+    }
+    failure {
+      // Notify on failure
+      echo 'Build or tests failed!'
+    }
+ }
+
+  stage('Cleanup') {
+    // Kill the running app
+    sh '''
+    PID=$(lsof -ti:8080)
+    if [ -n "$PID" ]; then
+      kill -9 $PID
+    fi
+    '''
+  }
+}
