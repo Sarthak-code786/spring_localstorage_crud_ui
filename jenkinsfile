@@ -24,6 +24,19 @@ node {
     sleep 10 // Give time to start
   }
 
+
+
+
+  stage('Cleanup') {
+    // Kill the running app
+    sh '''
+    PID=$(lsof -ti:8080)
+    if [ -n "$PID" ]; then
+      kill -9 $PID
+    fi
+    '''
+  }
+}
  post{
     always {
       // Archive the build artifacts
@@ -38,14 +51,3 @@ node {
       echo 'Build or tests failed!'
     }
  }
-
-  stage('Cleanup') {
-    // Kill the running app
-    sh '''
-    PID=$(lsof -ti:8080)
-    if [ -n "$PID" ]; then
-      kill -9 $PID
-    fi
-    '''
-  }
-}
