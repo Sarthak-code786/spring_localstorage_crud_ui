@@ -25,7 +25,7 @@ node {
   }
 
   stage('Post: Always') {
-  archiveArtifacts artifacts: 'build/libs/*.jar', fingerprint: true
+  archiveArtifacts artifacts: 'app/build/libs/*.jar', fingerprint: true
 }
 
 
