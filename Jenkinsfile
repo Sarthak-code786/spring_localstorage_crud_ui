@@ -1,6 +1,6 @@
 node {
   stage('Checkout') {
-    git url: 'https://github.com/Sarthak-code786/spring_localstorage_crud_ui.git'
+    git branch: 'main', url: 'https://github.com/Sarthak-code786/spring_localstorage_crud_ui.git'
   }
 
   stage('Permission Setup') {
