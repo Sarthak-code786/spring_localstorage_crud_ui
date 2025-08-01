@@ -37,17 +37,19 @@ node {
     '''
   }
 }
- post{
-    always {
-      // Archive the build artifacts
-      archiveArtifacts artifacts: 'build/libs/*.jar', fingerprint: true
-    }
-    success {
-      // Notify on success
-      echo 'Build and tests succeeded!'
-    }
-    failure {
-      // Notify on failure
-      echo 'Build or tests failed!'
-    }
- }
+
+stage('Post: Always') {
+  archiveArtifacts artifacts: 'build/libs/*.jar', fingerprint: true
+}
+
+
+if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
+  stage('Post: Success') {
+    echo 'Build and tests succeeded!'
+  }
+} else if (currentBuild.result == 'FAILURE') {
+  stage('Post: Failure') {
+    echo 'Build or tests failed!'
+  }
+}
+
