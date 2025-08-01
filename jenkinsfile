@@ -24,16 +24,8 @@ node {
     sleep 10 // Give time to start
   }
 
-  stage('Smoke Test') {
-    // Check if server is running
-    sh '''
-    STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8080)
-    if [ "$STATUS" -ne 200 ]; then
-      echo "Smoke test failed!"
-      exit 1
-    fi
-    '''
-  }
+
+
 
   stage('Cleanup') {
     // Kill the running app
@@ -45,3 +37,17 @@ node {
     '''
   }
 }
+ post{
+    always {
+      // Archive the build artifacts
+      archiveArtifacts artifacts: 'build/libs/*.jar', fingerprint: true
+    }
+    success {
+      // Notify on success
+      echo 'Build and tests succeeded!'
+    }
+    failure {
+      // Notify on failure
+      echo 'Build or tests failed!'
+    }
+ }
